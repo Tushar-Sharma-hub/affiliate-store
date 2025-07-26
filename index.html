@@ -151,12 +151,8 @@
       <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()" />
     </div>
 
-    <div class="categories" id="categoryList">
-      <!-- Category cards -->
-    </div>
-    <div class="products" id="productList">
-      <!-- Product cards dynamically displayed -->
-    </div>
+    <div class="categories" id="categoryList"></div>
+    <div class="products" id="productList"></div>
   </main>
 
   <footer>
@@ -166,136 +162,79 @@
   </footer>
 
   <script>
-  const categories = [
-    {
-      id: 'electronics',
-      title: 'Electronics',
-      img: 'electronics.png',
-      products: [
-        { name: 'GOBOULT Mustang Torq Wireless in Ear Earbuds ', price: '₹1,799', features: '60H Playtime, App Support, Quad Mic ENC, 45ms Low Latency, 13mm Driver, Breathing LEDs,Touch Controls, Made in India, IPX5, Ear buds Wireless (Silver)', img: 'ep1.jpg', link: 'https://amzn.to/4l8CNZe' },
-        { name: 'Boult Newly Launched Crown R Pro Smart Watch', price: '₹2,499', features: '1.43 HD AMOLED, BT Calling, Working Crown, Zinc Alloy Frame, 600 Nits Brightness, AI Voice Assistant, SpO2 Monitoring, 120+ Sports Mode (Metal Black)', img: 'ep2.jpg', link: 'https://amzn.to/45mlij9' },
-      ]
-    },
-    {
-      id: 'beauty',
-      title: 'Beauty Finds',
-      img: 'beauty.png',
-      products: [
-        { name: 'Etude Dear Darling Lip Oil Tint', price: '₹712', features: 'Juicy, Moisture- Rich Formula | Shade 05- Red Oil, 4.2ml', img: 'bp1.jpg', link: 'https://amzn.to/3GIAkGL' },
-        { name: 'Vega I-Curl Hair Curler for Women', price: '₹771', features: 'Ceramic Coated 0.5 inch-1 inch Barrel, Quick Heatup Technology, LED Indicator, Salon Style at Home, Suitable for All Hair Types, (VHCH-05)', img: 'bp2.jpg', link: 'https://amzn.to/4lSzQ02' },
-      ]
-    },
-    {
-      id: 'home',
-      title: 'Home Gadgets',
-      img: 'homegadgets.png',
-      products: [
-        { name: 'Ambrane 12kPA Powerful Suction 80W Wireless Hand Vacuum', price: '₹1,799', features: 'Air Blower 2-in-1 Wireless Vacuum Cleaner, BLDC Motor HEPA Filter, Compact & Lightweight for Car, Home use, & Pet Hair (Mini Vac 02, Orange)', img: 'hp1.jpg', link: 'https://amzn.to/4kYcSDh' },
-        { name: 'One94Store 40cm Motion Sensor Under Cabinet LED', price: '₹299', features: '1200mAh Battery, Dimmable USB Rechargeable Closet Lamp, Wireless Stick-On for Wardrobe, Kitchen, Stairs (Pack of 1) Yellow', img: 'hp2.jpg', link: 'https://amzn.to/4o5BHQs' },
-      ]
-    },
-    {
-      id: 'pet',
-      title: 'Pet Accessories',
-      img: 'pet.png',
-      products: [
-        { name: 'Qpets® 2.2L Cat Water Fountain', price: '₹1,299', features: 'Auto Pet Water Fountain for Cats with LED Light, Cute Floral Ultra Quiet Fountain Water Cat Dog Water Dispenser with Filter (Green Water Fountain)', img: 'pp1.jpg', link: 'https://amzn.to/4lMUE95' },
-        { name: 'Amazon Basics Premium Soft Velvet Pet Hut House ', price: '₹779', features: 'For Cats, Kittens and Small Dogs | With Reversible Cushion | Washable Cozy and Comfortable | Small | 40 x 40 x 40 cm', img: 'pp2.jpg', link: 'https://amzn.to/4lKZFie' },
-      ]
-    },
-    {
-      id: 'cutie',
-      title: 'Cutie Picks',
-      img: 'cutie.png',
-      products: [
-        { name: 'Desidiya® Sleeping Cat Rechargeable Silicone Night Lamp', price: '₹799', features: 'Cozy Cat LED Lamp, Kids Night Light, Nursery Decor, Birthday Gift, Silicone LED Light', img: 'cp1.jpg', link: 'https://amzn.to/45kwBIB' },
-        { name: 'Kawai Homes Cute Emotional Support Penguin', price: '₹450', features: 'Crochet Handmade Gifts Stress Anxiety Relief Toys with Message for Women Men Kids Friends Coworkers Birthday Christmas Valentine Gift for Him Her', img: 'cp2.jpg', link: 'https://amzn.to/46XPX7K' },
-      ]
-    },
-  ];
+    const categories = [
+      {
+        id: 'electronics',
+        title: 'Electronics',
+        img: 'electronics.png',
+        products: [
+          { name: 'GOBOULT Mustang Torq Wireless in Ear Earbuds', price: '₹1,799', features: '60H Playtime, App Support, Quad Mic ENC, 45ms Low Latency, 13mm Driver, Breathing LEDs,Touch Controls, Made in India, IPX5', img: 'ep1.jpg', link: 'https://amzn.to/4l8CNZe' },
+          { name: 'Boult Crown R Pro Smart Watch', price: '₹2,499', features: '1.43 HD AMOLED, BT Calling, Zinc Alloy Frame, 600 Nits, SpO2 Monitoring', img: 'ep2.jpg', link: 'https://amzn.to/45mlij9' },
+        ]
+      },
+      {
+        id: 'beauty',
+        title: 'Beauty Finds',
+        img: 'beauty.png',
+        products: [
+          { name: 'Etude Dear Darling Lip Oil Tint', price: '₹712', features: 'Juicy Moisture Formula | Shade 05 | 4.2ml', img: 'bp1.jpg', link: 'https://amzn.to/3GIAkGL' },
+          { name: 'Vega I-Curl Hair Curler', price: '₹771', features: 'Ceramic Barrel, Quick Heat, LED Indicator', img: 'bp2.jpg', link: 'https://amzn.to/4lSzQ02' },
+        ]
+      },
+      {
+        id: 'home',
+        title: 'Home Gadgets',
+        img: 'homegadgets.png',
+        products: [
+          { name: 'Ambrane 12kPA Suction Vacuum', price: '₹1,799', features: 'Wireless, Compact, HEPA Filter, Mini Orange Vac', img: 'hp1.jpg', link: 'https://amzn.to/4kYcSDh' },
+          { name: 'One94Store Motion Sensor LED', price: '₹299', features: 'Rechargeable Closet Lamp, USB, Yellow Light', img: 'hp2.jpg', link: 'https://amzn.to/4o5BHQs' },
+        ]
+      },
+      {
+        id: 'pet',
+        title: 'Pet Accessories',
+        img: 'pet.png',
+        products: [
+          { name: 'Qpets® Cat Water Fountain', price: '₹1,299', features: 'LED Light, Cute Floral Dispenser with Filter', img: 'pp1.jpg', link: 'https://amzn.to/4lMUE95' },
+          { name: 'Amazon Basics Velvet Pet Hut', price: '₹779', features: 'For Cats & Small Dogs, Washable, 40x40x40cm', img: 'pp2.jpg', link: 'https://amzn.to/4lKZFie' },
+        ]
+      },
+      {
+        id: 'cutie',
+        title: 'Cutie Picks',
+        img: 'cutie.png',
+        products: [
+          { name: 'Desidiya® Cat LED Lamp', price: '₹799', features: 'Rechargeable, Silicone, Nursery Decor', img: 'cp1.jpg', link: 'https://amzn.to/45kwBIB' },
+          { name: 'Kawai Homes Penguin Plushie', price: '₹450', features: 'Crochet Handmade Gift for All Ages', img: 'cp2.jpg', link: 'https://amzn.to/46XPX7K' },
+        ]
+      },
+    ];
 
-  const categoryList = document.getElementById('categoryList');
-  const productList = document.getElementById('productList');
-  const searchInput = document.getElementById('searchInput');
+    const categoryList = document.getElementById('categoryList');
+    const productList = document.getElementById('productList');
+    const searchInput = document.getElementById('searchInput');
 
-  function renderCategories() {
-    categoryList.innerHTML = '';
-    categoryList.style.display = 'flex';
-    productList.style.display = 'none';
+    function renderCategories() {
+      categoryList.innerHTML = '';
+      categoryList.style.display = 'flex';
+      productList.style.display = 'none';
 
-    categories.forEach(cat => {
-      const card = document.createElement('div');
-      card.className = 'category';
-      card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
-      card.onclick = () => showProducts(cat.products, cat.id);
-      categoryList.appendChild(card);
-    });
-  }
-
-  function showProducts(products, categoryId = '') {
-    history.pushState({ type: 'category', categoryId }, '', `#${categoryId}`);
-    categoryList.style.display = 'none';
-    productList.innerHTML = '';
-    productList.style.display = 'flex';
-
-    products.forEach(prod => {
-      const card = document.createElement('div');
-      card.className = 'product';
-      card.innerHTML = `
-        <img src="${prod.img}" alt="${prod.name}">
-        <h4>${prod.name}</h4>
-        <p>${prod.features}</p>
-        <p><strong>${prod.price}</strong></p>
-        <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
-      `;
-      productList.appendChild(card);
-    });
-  }
-
-  function goBack() {
-    renderCategories();
-    history.pushState({ type: 'home' }, '', '/');
-  }
-
-  function searchProducts() {
-    const query = searchInput.value.toLowerCase().trim();
-    categoryList.innerHTML = '';
-    productList.innerHTML = '';
-    categoryList.style.display = 'none';
-    productList.style.display = 'none';
-
-    if (!query) {
-      renderCategories();
-      return;
-    }
-
-    let foundCategory = false;
-    let foundProducts = [];
-
-    categories.forEach(cat => {
-      if (cat.title.toLowerCase().includes(query)) {
-        foundCategory = true;
+      categories.forEach(cat => {
         const card = document.createElement('div');
         card.className = 'category';
         card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
         card.onclick = () => showProducts(cat.products, cat.id);
         categoryList.appendChild(card);
-      }
-
-      cat.products.forEach(prod => {
-        if (prod.name.toLowerCase().includes(query) || prod.features.toLowerCase().includes(query)) {
-          foundProducts.push(prod);
-        }
       });
-    });
-
-    if (foundCategory) {
-      categoryList.style.display = 'flex';
     }
 
-    if (foundProducts.length > 0) {
+    function showProducts(products, categoryId = '') {
+      history.pushState({ type: 'category', categoryId }, '', `#${categoryId}`);
+      categoryList.style.display = 'none';
+      productList.innerHTML = '';
       productList.style.display = 'flex';
-      foundProducts.forEach(prod => {
+
+      products.forEach(prod => {
         const card = document.createElement('div');
         card.className = 'product';
         card.innerHTML = `
@@ -309,43 +248,88 @@
       });
     }
 
-    if (!foundCategory && foundProducts.length === 0) {
-      productList.style.display = 'flex';
-      const msg = document.createElement('p');
-      msg.textContent = "No products found.";
-      msg.style.fontSize = '1.1rem';
-      msg.style.color = '#999';
-      productList.appendChild(msg);
-    }
-  }
+    function searchProducts() {
+      const query = searchInput.value.toLowerCase().trim();
+      categoryList.innerHTML = '';
+      productList.innerHTML = '';
+      categoryList.style.display = 'none';
+      productList.style.display = 'none';
 
-  window.addEventListener('popstate', (event) => {
-    if (event.state && event.state.type === 'category') {
-      const cat = categories.find(c => c.id === event.state.categoryId);
+      if (!query) {
+        renderCategories();
+        return;
+      }
+
+      let foundCategory = false;
+      let foundProducts = [];
+
+      categories.forEach(cat => {
+        if (cat.title.toLowerCase().includes(query)) {
+          foundCategory = true;
+          const card = document.createElement('div');
+          card.className = 'category';
+          card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
+          card.onclick = () => showProducts(cat.products, cat.id);
+          categoryList.appendChild(card);
+        }
+
+        cat.products.forEach(prod => {
+          if (prod.name.toLowerCase().includes(query) || prod.features.toLowerCase().includes(query)) {
+            foundProducts.push(prod);
+          }
+        });
+      });
+
+      if (foundCategory) categoryList.style.display = 'flex';
+
+      if (foundProducts.length > 0) {
+        productList.style.display = 'flex';
+        foundProducts.forEach(prod => {
+          const card = document.createElement('div');
+          card.className = 'product';
+          card.innerHTML = `
+            <img src="${prod.img}" alt="${prod.name}">
+            <h4>${prod.name}</h4>
+            <p>${prod.features}</p>
+            <p><strong>${prod.price}</strong></p>
+            <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
+          `;
+          productList.appendChild(card);
+        });
+      }
+
+      if (!foundCategory && foundProducts.length === 0) {
+        productList.style.display = 'flex';
+        const msg = document.createElement('p');
+        msg.textContent = "No products found.";
+        msg.style.fontSize = '1.1rem';
+        msg.style.color = '#999';
+        productList.appendChild(msg);
+      }
+    }
+
+    window.addEventListener('popstate', (event) => {
+      if (event.state && event.state.type === 'category') {
+        const cat = categories.find(c => c.id === event.state.categoryId);
+        if (cat) showProducts(cat.products, cat.id);
+      } else {
+        renderCategories();
+      }
+    });
+
+    function handleInitialHash() {
+      const hash = window.location.hash.replace('#', '');
+      const cat = categories.find(c => c.id === hash);
       if (cat) {
         showProducts(cat.products, cat.id);
+        history.replaceState({ type: 'category', categoryId: cat.id }, '', `#${cat.id}`);
+      } else {
+        renderCategories();
+        history.replaceState({ type: 'home' }, '', '#');
       }
-    } else {
-      renderCategories();
     }
-  });
 
-  // On initial load: check if URL has hash and open that category
-  function handleInitialHash() {
-    const hash = window.location.hash.replace('#', '');
-    const cat = categories.find(c => c.id === hash);
-    if (cat) {
-      showProducts(cat.products, cat.id);
-      history.replaceState({ type: 'category', categoryId: cat.id }, '', `#${cat.id}`);
-    } else {
-      renderCategories();
-      history.pushState({ type: 'home' }, '', '#');
-    }
-  }
-
-  handleInitialHash();
-</script>
-
-
+    handleInitialHash();
+  </script>
 </body>
 </html>
