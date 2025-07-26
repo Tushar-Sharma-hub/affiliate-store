@@ -339,7 +339,7 @@
       history.replaceState({ type: 'category', categoryId: cat.id }, '', `#${cat.id}`);
     } else {
       renderCategories();
-      history.replaceState({ type: 'home' }, '', '/');
+      history.pushState({ type: 'home' }, '', '#');
     }
   }
 
