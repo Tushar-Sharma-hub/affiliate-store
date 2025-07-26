@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curated Cool Picks</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #FFF2EB;
+      color: #333;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    header {
+      background-color: #FFD6BA;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #333;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .search-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-container input {
+      padding: 10px;
+      width: 50%;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .category {
+      background-color: #FFE8CD;
+      width: 200px;
+      text-align: center;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .category:hover {
+      transform: scale(1.05);
+    }
+
+    .category img {
+      width: 100%;
+      height: 150px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .category h3 {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .products {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      gap: 20px;
+      background-color: #FFF2EB;
+    }
+
+    .product {
+      background-color: #FFDCDC;
+      width: 220px;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      border-radius: 10px;
+    }
+
+    .product h4 {
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .buy-button {
+      background-color: #FFD6BA;
+      color: #333;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    .buy-button:hover {
+      background-color: #FFB07C;
+    }
+
+    footer {
+      background-color: #FFD6BA;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Viral Picks</h1>
+      <p>Click. Smile. Shop smarter with Amazon — affiliate-supported finds you'll love!</p>
+    </header>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()" />
+    </div>
+
+    <div class="categories" id="categoryList">
+      <!-- Category cards -->
+    </div>
+    <div class="products" id="productList">
+      <!-- Product cards dynamically displayed -->
+    </div>
+  </main>
+
+  <footer>
+    <p>🛍️ This site contains Amazon affiliate links. As an Amazon Associate, I earn from qualifying purchases.</p>
+    <p>Made with ❤️ by Tushar Sharma</p>
+    <p>© 2025 Viral Picks. All rights reserved.</p>
+  </footer>
+
+  <script>
+  const categories = [
+    {
+      id: 'electronics',
+      title: 'Electronics',
+      img: 'electronics.png',
+      products: [
+        { name: 'GOBOULT Mustang Torq Wireless in Ear Earbuds ', price: '₹1,799', features: '60H Playtime, App Support, Quad Mic ENC, 45ms Low Latency, 13mm Driver, Breathing LEDs,Touch Controls, Made in India, IPX5, Ear buds Wireless (Silver)', img: 'ep1.jpg', link: 'https://amzn.to/4l8CNZe' },
+        { name: 'Boult Newly Launched Crown R Pro Smart Watch', price: '₹2,499', features: '1.43 HD AMOLED, BT Calling, Working Crown, Zinc Alloy Frame, 600 Nits Brightness, AI Voice Assistant, SpO2 Monitoring, 120+ Sports Mode (Metal Black)', img: 'ep2.jpg', link: 'https://amzn.to/45mlij9' },
+      ]
+    },
+    {
+      id: 'beauty',
+      title: 'Beauty Finds',
+      img: 'beauty.png',
+      products: [
+        { name: 'Etude Dear Darling Lip Oil Tint', price: '₹712', features: 'Juicy, Moisture- Rich Formula | Shade 05- Red Oil, 4.2ml', img: 'bp1.jpg', link: 'https://amzn.to/3GIAkGL' },
+        { name: 'Vega I-Curl Hair Curler for Women', price: '₹771', features: 'Ceramic Coated 0.5 inch-1 inch Barrel, Quick Heatup Technology, LED Indicator, Salon Style at Home, Suitable for All Hair Types, (VHCH-05)', img: 'bp2.jpg', link: 'https://amzn.to/4lSzQ02' },
+      ]
+    },
+    {
+      id: 'home',
+      title: 'Home Gadgets',
+      img: 'homegadgets.png',
+      products: [
+        { name: 'Ambrane 12kPA Powerful Suction 80W Wireless Hand Vacuum', price: '₹1,799', features: 'Air Blower 2-in-1 Wireless Vacuum Cleaner, BLDC Motor HEPA Filter, Compact & Lightweight for Car, Home use, & Pet Hair (Mini Vac 02, Orange)', img: 'hp1.jpg', link: 'https://amzn.to/4kYcSDh' },
+        { name: 'One94Store 40cm Motion Sensor Under Cabinet LED', price: '₹299', features: '1200mAh Battery, Dimmable USB Rechargeable Closet Lamp, Wireless Stick-On for Wardrobe, Kitchen, Stairs (Pack of 1) Yellow', img: 'hp2.jpg', link: 'https://amzn.to/4o5BHQs' },
+      ]
+    },
+    {
+      id: 'pet',
+      title: 'Pet Accessories',
+      img: 'pet.png',
+      products: [
+        { name: 'Qpets® 2.2L Cat Water Fountain', price: '₹1,299', features: 'Auto Pet Water Fountain for Cats with LED Light, Cute Floral Ultra Quiet Fountain Water Cat Dog Water Dispenser with Filter (Green Water Fountain)', img: 'pp1.jpg', link: 'https://amzn.to/4lMUE95' },
+        { name: 'Amazon Basics Premium Soft Velvet Pet Hut House ', price: '₹779', features: 'For Cats, Kittens and Small Dogs | With Reversible Cushion | Washable Cozy and Comfortable | Small | 40 x 40 x 40 cm', img: 'pp2.jpg', link: 'https://amzn.to/4lKZFie' },
+      ]
+    },
+    {
+      id: 'cutie',
+      title: 'Cutie Picks',
+      img: 'cutie.png',
+      products: [
+        { name: 'Desidiya® Sleeping Cat Rechargeable Silicone Night Lamp', price: '₹799', features: 'Cozy Cat LED Lamp, Kids Night Light, Nursery Decor, Birthday Gift, Silicone LED Light', img: 'cp1.jpg', link: 'https://amzn.to/45kwBIB' },
+        { name: 'Kawai Homes Cute Emotional Support Penguin', price: '₹450', features: 'Crochet Handmade Gifts Stress Anxiety Relief Toys with Message for Women Men Kids Friends Coworkers Birthday Christmas Valentine Gift for Him Her', img: 'cp2.jpg', link: 'https://amzn.to/46XPX7K' },
+      ]
+    },
+  ];
+
+  const categoryList = document.getElementById('categoryList');
+  const productList = document.getElementById('productList');
+  const searchInput = document.getElementById('searchInput');
+
+  function renderCategories() {
+    categoryList.innerHTML = '';
+    categoryList.style.display = 'flex';
+    productList.style.display = 'none';
+
+    categories.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'category';
+      card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
+      card.onclick = () => showProducts(cat.products, cat.id);
+      categoryList.appendChild(card);
+    });
+  }
+
+  function showProducts(products, categoryId = '') {
+    history.pushState({ type: 'category', categoryId }, '', `#${categoryId}`);
+    categoryList.style.display = 'none';
+    productList.innerHTML = '';
+    productList.style.display = 'flex';
+
+    products.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'product';
+      card.innerHTML = `
+        <img src="${prod.img}" alt="${prod.name}">
+        <h4>${prod.name}</h4>
+        <p>${prod.features}</p>
+        <p><strong>${prod.price}</strong></p>
+        <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
+      `;
+      productList.appendChild(card);
+    });
+  }
+
+  function goBack() {
+    renderCategories();
+    history.pushState({ type: 'home' }, '', '/');
+  }
+
+  function searchProducts() {
+    const query = searchInput.value.toLowerCase().trim();
+    categoryList.innerHTML = '';
+    productList.innerHTML = '';
+    categoryList.style.display = 'none';
+    productList.style.display = 'none';
+
+    if (!query) {
+      renderCategories();
+      return;
+    }
+
+    let foundCategory = false;
+    let foundProducts = [];
+
+    categories.forEach(cat => {
+      if (cat.title.toLowerCase().includes(query)) {
+        foundCategory = true;
+        const card = document.createElement('div');
+        card.className = 'category';
+        card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
+        card.onclick = () => showProducts(cat.products, cat.id);
+        categoryList.appendChild(card);
+      }
+
+      cat.products.forEach(prod => {
+        if (prod.name.toLowerCase().includes(query) || prod.features.toLowerCase().includes(query)) {
+          foundProducts.push(prod);
+        }
+      });
+    });
+
+    if (foundCategory) {
+      categoryList.style.display = 'flex';
+    }
+
+    if (foundProducts.length > 0) {
+      productList.style.display = 'flex';
+      foundProducts.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'product';
+        card.innerHTML = `
+          <img src="${prod.img}" alt="${prod.name}">
+          <h4>${prod.name}</h4>
+          <p>${prod.features}</p>
+          <p><strong>${prod.price}</strong></p>
+          <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
+        `;
+        productList.appendChild(card);
+      });
+    }
+
+    if (!foundCategory && foundProducts.length === 0) {
+      productList.style.display = 'flex';
+      const msg = document.createElement('p');
+      msg.textContent = "No products found.";
+      msg.style.fontSize = '1.1rem';
+      msg.style.color = '#999';
+      productList.appendChild(msg);
+    }
+  }
+
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.type === 'category') {
+      const cat = categories.find(c => c.id === event.state.categoryId);
+      if (cat) {
+        showProducts(cat.products, cat.id);
+      }
+    } else {
+      renderCategories();
+    }
+  });
+
+  // On initial load: check if URL has hash and open that category
+  function handleInitialHash() {
+    const hash = window.location.hash.replace('#', '');
+    const cat = categories.find(c => c.id === hash);
+    if (cat) {
+      showProducts(cat.products, cat.id);
+      history.replaceState({ type: 'category', categoryId: cat.id }, '', `#${cat.id}`);
+    } else {
+      renderCategories();
+      history.replaceState({ type: 'home' }, '', '/');
+    }
+  }
+
+  handleInitialHash();
+</script>
+
+
+</body>
+</html>
