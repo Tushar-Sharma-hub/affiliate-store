@@ -216,11 +216,11 @@
       },
     ];
 
-    const categoryList = document.getElementById('categoryList');
-    const productList = document.getElementById('productList');
-    const searchInput = document.getElementById('searchInput');
+  const categoryList = document.getElementById('categoryList');
+  const productList = document.getElementById('productList');
+  const searchInput = document.getElementById('searchInput');
 
-    function renderCategories() {
+  function renderCategories() {
     categoryList.innerHTML = '';
     categoryList.style.display = 'flex';
     productList.style.display = 'none';
@@ -230,55 +230,51 @@
       card.className = 'category';
       card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
       card.onclick = () => {
-        location.hash = `#${cat.id}`;
+        history.pushState({ page: 'products', id: cat.id }, '', `#${cat.id}`);
+        showProducts(cat.products);
       };
       categoryList.appendChild(card);
     });
   }
 
   function showProducts(products) {
-  history.pushState({ page: "products" }, "", "#products");
+    categoryList.style.display = 'none';
+    productList.innerHTML = '';
 
-  categoryList.style.display = 'none';
-  productList.innerHTML = '';
-    
-  const backBtn = document.createElement('button');
-  backBtn.textContent = '⬅ Back to Categories';
-  backBtn.style.margin = '10px 0';
-  backBtn.style.padding = '10px 16px';
-  backBtn.style.border = 'none';
-  backBtn.style.borderRadius = '8px';
-  backBtn.style.backgroundColor = '#ffdfba';
-  backBtn.style.fontWeight = 'bold';
-  backBtn.style.cursor = 'pointer';
-  backBtn.onclick = () => {
+    const backBtn = document.createElement('button');
+    backBtn.textContent = '⬅ Back to Categories';
+    backBtn.style.margin = '10px 0';
+    backBtn.style.padding = '10px 16px';
+    backBtn.style.border = 'none';
+    backBtn.style.borderRadius = '8px';
+    backBtn.style.backgroundColor = '#ffdfba';
+    backBtn.style.fontWeight = 'bold';
+    backBtn.style.cursor = 'pointer';
+    backBtn.onclick = () => {
+      history.pushState({ page: 'categories' }, '', '#categories');
+      renderCategories();
+      window.scrollTo(0, 0);
+    };
+    productList.appendChild(backBtn);
 
-    productList.style.display = 'none';
-    categoryList.style.display = 'flex';
-    history.pushState({ page: "categories" }, "", "#categories");
-    window.scrollTo(0, 0);
-  };
-  productList.appendChild(backBtn);
+    productList.style.display = 'flex';
+    productList.style.flexWrap = 'wrap';
 
-  productList.style.display = 'flex';
-  productList.style.flexWrap = 'wrap';
-
-  products.forEach(prod => {
-    const card = document.createElement('div');
-    card.className = 'product';
-    card.innerHTML = `
-      <img src="${prod.img}" alt="${prod.name}">
-      <h4>${prod.name}</h4>
-      <p>${prod.features}</p>
-      <p><strong>${prod.price}</strong></p>
-      <a href="${prod.link}" target="_blank">
-        <button class="buy-button">Buy Now</button>
-      </a>
-    `;
-    productList.appendChild(card);
-  });
-}
-
+    products.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'product';
+      card.innerHTML = `
+        <img src="${prod.img}" alt="${prod.name}">
+        <h4>${prod.name}</h4>
+        <p>${prod.features}</p>
+        <p><strong>${prod.price}</strong></p>
+        <a href="${prod.link}" target="_blank">
+          <button class="buy-button">Buy Now</button>
+        </a>
+      `;
+      productList.appendChild(card);
+    });
+  }
 
   function searchProducts() {
     const query = searchInput.value.toLowerCase().trim();
@@ -302,7 +298,8 @@
         card.className = 'category';
         card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
         card.onclick = () => {
-          location.hash = `#${cat.id}`;
+          history.pushState({ page: 'products', id: cat.id }, '', `#${cat.id}`);
+          showProducts(cat.products);
         };
         categoryList.appendChild(card);
       }
@@ -351,6 +348,15 @@
       renderCategories();
     }
   }
+
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.page === 'products') {
+      const cat = categories.find(c => c.id === event.state.id);
+      if (cat) showProducts(cat.products);
+    } else {
+      renderCategories();
+    }
+  });
 
   window.addEventListener('hashchange', handleHashChange);
   window.addEventListener('load', handleHashChange);
