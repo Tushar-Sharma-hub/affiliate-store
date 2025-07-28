@@ -237,23 +237,48 @@
   }
 
   function showProducts(products) {
-    categoryList.style.display = 'none';
-    productList.innerHTML = '';
-    productList.style.display = 'flex';
+  history.pushState({ page: "products" }, "", "#products");
 
-    products.forEach(prod => {
-      const card = document.createElement('div');
-      card.className = 'product';
-      card.innerHTML = `
-        <img src="${prod.img}" alt="${prod.name}">
-        <h4>${prod.name}</h4>
-        <p>${prod.features}</p>
-        <p><strong>${prod.price}</strong></p>
-        <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
-      `;
-      productList.appendChild(card);
-    });
-  }
+  categoryList.style.display = 'none';
+  productList.innerHTML = '';
+    
+  const backBtn = document.createElement('button');
+  backBtn.textContent = '⬅ Back to Categories';
+  backBtn.style.margin = '10px 0';
+  backBtn.style.padding = '10px 16px';
+  backBtn.style.border = 'none';
+  backBtn.style.borderRadius = '8px';
+  backBtn.style.backgroundColor = '#ffdfba';
+  backBtn.style.fontWeight = 'bold';
+  backBtn.style.cursor = 'pointer';
+  backBtn.onclick = () => {
+
+    productList.style.display = 'none';
+    categoryList.style.display = 'flex';
+    history.pushState({ page: "categories" }, "", "#categories");
+    window.scrollTo(0, 0);
+  };
+  productList.appendChild(backBtn);
+
+  productList.style.display = 'flex';
+  productList.style.flexWrap = 'wrap';
+
+  products.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = 'product';
+    card.innerHTML = `
+      <img src="${prod.img}" alt="${prod.name}">
+      <h4>${prod.name}</h4>
+      <p>${prod.features}</p>
+      <p><strong>${prod.price}</strong></p>
+      <a href="${prod.link}" target="_blank">
+        <button class="buy-button">Buy Now</button>
+      </a>
+    `;
+    productList.appendChild(card);
+  });
+}
+
 
   function searchProducts() {
     const query = searchInput.value.toLowerCase().trim();
