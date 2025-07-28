@@ -221,26 +221,79 @@
     const searchInput = document.getElementById('searchInput');
 
     function renderCategories() {
-      categoryList.innerHTML = '';
-      categoryList.style.display = 'flex';
-      productList.style.display = 'none';
+    categoryList.innerHTML = '';
+    categoryList.style.display = 'flex';
+    productList.style.display = 'none';
 
-      categories.forEach(cat => {
+    categories.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'category';
+      card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
+      card.onclick = () => {
+        location.hash = `#${cat.id}`;
+      };
+      categoryList.appendChild(card);
+    });
+  }
+
+  function showProducts(products) {
+    categoryList.style.display = 'none';
+    productList.innerHTML = '';
+    productList.style.display = 'flex';
+
+    products.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'product';
+      card.innerHTML = `
+        <img src="${prod.img}" alt="${prod.name}">
+        <h4>${prod.name}</h4>
+        <p>${prod.features}</p>
+        <p><strong>${prod.price}</strong></p>
+        <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
+      `;
+      productList.appendChild(card);
+    });
+  }
+
+  function searchProducts() {
+    const query = searchInput.value.toLowerCase().trim();
+    categoryList.innerHTML = '';
+    productList.innerHTML = '';
+    categoryList.style.display = 'none';
+    productList.style.display = 'none';
+
+    if (!query) {
+      renderCategories();
+      return;
+    }
+
+    let foundCategory = false;
+    let foundProducts = [];
+
+    categories.forEach(cat => {
+      if (cat.title.toLowerCase().includes(query)) {
+        foundCategory = true;
         const card = document.createElement('div');
         card.className = 'category';
         card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
-        card.onclick = () => showProducts(cat.products, cat.id);
+        card.onclick = () => {
+          location.hash = `#${cat.id}`;
+        };
         categoryList.appendChild(card);
+      }
+
+      cat.products.forEach(prod => {
+        if (prod.name.toLowerCase().includes(query) || prod.features.toLowerCase().includes(query)) {
+          foundProducts.push(prod);
+        }
       });
-    }
+    });
 
-    function showProducts(products, categoryId = '') {
-      history.pushState({ type: 'category', categoryId }, '', `#${categoryId}`);
-      categoryList.style.display = 'none';
-      productList.innerHTML = '';
+    if (foundCategory) categoryList.style.display = 'flex';
+
+    if (foundProducts.length > 0) {
       productList.style.display = 'flex';
-
-      products.forEach(prod => {
+      foundProducts.forEach(prod => {
         const card = document.createElement('div');
         card.className = 'product';
         card.innerHTML = `
@@ -254,88 +307,28 @@
       });
     }
 
-    function searchProducts() {
-      const query = searchInput.value.toLowerCase().trim();
-      categoryList.innerHTML = '';
-      productList.innerHTML = '';
-      categoryList.style.display = 'none';
-      productList.style.display = 'none';
-
-      if (!query) {
-        renderCategories();
-        return;
-      }
-
-      let foundCategory = false;
-      let foundProducts = [];
-
-      categories.forEach(cat => {
-        if (cat.title.toLowerCase().includes(query)) {
-          foundCategory = true;
-          const card = document.createElement('div');
-          card.className = 'category';
-          card.innerHTML = `<img src="${cat.img}" alt="${cat.title}"><h3>${cat.title}</h3>`;
-          card.onclick = () => showProducts(cat.products, cat.id);
-          categoryList.appendChild(card);
-        }
-
-        cat.products.forEach(prod => {
-          if (prod.name.toLowerCase().includes(query) || prod.features.toLowerCase().includes(query)) {
-            foundProducts.push(prod);
-          }
-        });
-      });
-
-      if (foundCategory) categoryList.style.display = 'flex';
-
-      if (foundProducts.length > 0) {
-        productList.style.display = 'flex';
-        foundProducts.forEach(prod => {
-          const card = document.createElement('div');
-          card.className = 'product';
-          card.innerHTML = `
-            <img src="${prod.img}" alt="${prod.name}">
-            <h4>${prod.name}</h4>
-            <p>${prod.features}</p>
-            <p><strong>${prod.price}</strong></p>
-            <a href="${prod.link}" target="_blank"><button class="buy-button">Buy Now</button></a>
-          `;
-          productList.appendChild(card);
-        });
-      }
-
-      if (!foundCategory && foundProducts.length === 0) {
-        productList.style.display = 'flex';
-        const msg = document.createElement('p');
-        msg.textContent = "No products found.";
-        msg.style.fontSize = '1.1rem';
-        msg.style.color = '#999';
-        productList.appendChild(msg);
-      }
+    if (!foundCategory && foundProducts.length === 0) {
+      productList.style.display = 'flex';
+      const msg = document.createElement('p');
+      msg.textContent = "No products found.";
+      msg.style.fontSize = '1.1rem';
+      msg.style.color = '#999';
+      productList.appendChild(msg);
     }
+  }
 
-    window.addEventListener('popstate', (event) => {
-      if (event.state && event.state.type === 'category') {
-        const cat = categories.find(c => c.id === event.state.categoryId);
-        if (cat) showProducts(cat.products, cat.id);
-      } else {
-        renderCategories();
-      }
-    });
-
-    function handleInitialHash() {
-      const hash = window.location.hash.replace('#', '');
-      const cat = categories.find(c => c.id === hash);
-      if (cat) {
-        showProducts(cat.products, cat.id);
-        history.replaceState({ type: 'category', categoryId: cat.id }, '', `#${cat.id}`);
-      } else {
-        renderCategories();
-        history.replaceState({ type: 'home' }, '', '#');
-      }
+  function handleHashChange() {
+    const hash = window.location.hash.replace('#', '');
+    const category = categories.find(c => c.id === hash);
+    if (category) {
+      showProducts(category.products);
+    } else {
+      renderCategories();
     }
+  }
 
-    handleInitialHash();
-  </script>
+  window.addEventListener('hashchange', handleHashChange);
+  window.addEventListener('load', handleHashChange);
+</script>
 </body>
 </html>
