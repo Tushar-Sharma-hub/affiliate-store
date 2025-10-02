@@ -18,22 +18,7 @@
 - `script.js` — Handles interactive elements and link redirection
 - `/images` — Product images
 
-## ⚡ Getting Started
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Tushar-Sharma-hub/affiliate-store.git
-   ```
-2. **Open `index.html`** in your browser
-3. **Edit products and affiliate links** in `index.html` or `script.js`
-
-## 🧩 Customization
-- Add/remove products by editing `index.html`
-- Replace affiliate links with your own
-- Update styles in `style.css`
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
+## Link for the website : https://tushar-sharma-hub.github.io/affiliate-store/
 
 ---
 
