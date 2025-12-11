@@ -19,7 +19,3 @@
 - `/images` — Product images
 
 ## Link for the website : https://tushar-sharma-hub.github.io/affiliate-store/
-
----
-
-Enjoy earning with your affiliate store!
